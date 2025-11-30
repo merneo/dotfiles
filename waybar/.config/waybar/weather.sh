@@ -7,6 +7,10 @@
 # Dependencies: curl, jq
 # =============================================================================
 
+# Cache file location
+CACHE_FILE="$HOME/.cache/waybar_weather.json"
+CACHE_MAX_AGE=3600  # Cache valid for 1 hour (in seconds)
+
 # 1. Check for jq dependency
 if ! command -v jq &> /dev/null; then
     echo '{"text": "Err: jq", "tooltip": "jq is missing. Please install it."}'
@@ -20,8 +24,18 @@ fi
 # URL ends with /?format=j1 to auto-detect location based on IP
 weather_data=$(curl --max-time 15 -s "https://wttr.in/?format=j1")
 
-# 3. Handle connection errors
+# 3. Handle connection errors - use cache if available
 if [ $? -ne 0 ] || [ -z "$weather_data" ]; then
+    # Check if cache exists and is recent enough
+    if [ -f "$CACHE_FILE" ]; then
+        cache_age=$(($(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)))
+        if [ $cache_age -lt $CACHE_MAX_AGE ]; then
+            # Use cached data
+            cat "$CACHE_FILE"
+            exit 0
+        fi
+    fi
+    # No valid cache available
     echo '{"text": "Offline", "tooltip": "Cannot reach wttr.in. Check internet connection."}'
     exit 0
 fi
@@ -57,4 +71,10 @@ esac
 # 7. Output JSON
 # Text: Icon + Temp
 # Tooltip: City, Description, Humidity
-echo "{\"text\": \"$icon ${temp}°C\", \"tooltip\": \"$city\n$desc\nHumidity: ${humidity}%\"}"
+output="{\"text\": \"$icon ${temp}°C\", \"tooltip\": \"$city\n$desc\nHumidity: ${humidity}%\"}"
+
+# 8. Save to cache for future use
+echo "$output" > "$CACHE_FILE"
+
+# 9. Display output
+echo "$output"
