@@ -60,6 +60,59 @@ pkill waybar && waybar &
 - `style.css` - Minimalist styling for v2 design
 - `weather.sh` - Weather data fetch script
 
+## Weather Module
+
+The weather module fetches real-time weather data from wttr.in and displays it in the Waybar.
+
+### Features
+
+- **Automatic Location Detection:** Uses your IP address to detect location (no configuration needed)
+- **Weather Icons:** Shows emoji icons based on current conditions (☀️ ⛅ ☁️ 🌧️ ❄️ 🌨️ ⛈️)
+- **Detailed Tooltip:** Hover to see city name, weather description, and humidity
+- **Error Handling:** Gracefully handles offline state and API errors
+- **Refresh Interval:** Updates every 5 minutes (configurable in `config.jsonc`)
+
+### Dependencies
+
+```bash
+# Required packages
+sudo pacman -S curl jq
+```
+
+### How It Works
+
+The script (`weather.sh`) automatically detects your location based on your IP address by calling:
+```
+https://wttr.in/?format=j1
+```
+
+No city configuration is needed - it just works out of the box!
+
+### Manual Location Override
+
+If you want to force a specific city instead of auto-detection, edit `~/.config/waybar/weather.sh` line 21:
+
+```bash
+# Change this:
+weather_data=$(curl --max-time 5 -s "https://wttr.in/?format=j1")
+
+# To this (example for Brno):
+weather_data=$(curl --max-time 5 -s "https://wttr.in/Brno?format=j1")
+```
+
+### Troubleshooting
+
+**Weather shows "Offline":**
+- Check internet connection
+- Verify wttr.in is accessible: `curl wttr.in`
+
+**Weather shows "Err: jq":**
+- Install jq: `sudo pacman -S jq`
+
+**Weather shows "API Error":**
+- wttr.in might be temporarily unavailable
+- Wait a few minutes for the next refresh cycle
+
 ## Customization
 
 Key CSS selectors for v2:
