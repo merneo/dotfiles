@@ -1,0 +1,10 @@
+[Unit]
+Description=Restore dotfiles symlinks
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'cd %h/dotfiles && /usr/bin/stow -R hypr waybar tmux nvim kitty albert neofetch swayosd scripts 2>&1 | logger -t dotfiles-restore'
+
+[Install]
+WantedBy=default.target

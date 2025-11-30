@@ -1,0 +1,89 @@
+{
+  // =============================================================================
+  // WAYBAR CONFIGURATION
+  // Theme: Catppuccin Mocha Green
+  // Goal: Minimalist, functional status bar with workspace and hardware monitoring.
+  // =============================================================================
+
+  // GLOBAL SETTINGS
+  // 'layer': 'top' ensures the bar is always visible above windows.
+  "layer": "top",
+  "position": "top",
+  "height": 24, // Compact height to maximize screen real estate
+
+  // MODULE ARRANGEMENT
+  // Left: Navigation (Workspaces)
+  // Center: Information (Weather)
+  // Right: System Status (Audio, Network, Battery, Time)
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["custom/weather"],
+  "modules-right": ["pulseaudio", "network", "battery", "clock"],
+
+  // MODULE CONFIGURATION
+
+  // Workspaces
+  // Displays numbered workspaces.
+  // 'persistent-workspaces': Fixes workspaces to specific monitors for muscle memory.
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "on-click": "activate",
+    "all-outputs": false,
+    "persistent-workspaces": {
+      "eDP-1": [1, 2, 3, 4, 5],      // Laptop screen
+      "HDMI-A-1": [6, 7, 8, 9, 10]   // External monitor
+    }
+  },
+
+  // Weather (Custom Script)
+  // Fetches weather data from wttr.in via a helper script.
+  // 'json': Expects structured data for tooltips.
+  "custom/weather": {
+    "exec": "~/.config/waybar/weather.sh",
+    "restart-interval": 300, // Update every 5 minutes to avoid rate limiting
+    "return-type": "json",
+    "format": "{}"
+  },
+
+  // PulseAudio
+  // Volume control. Clicking opens the full mixer (pavucontrol).
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "MUTE {volume}%",
+    "on-click": "pavucontrol",
+    "scroll-step": 5
+  },
+
+  // Network
+  // Displays IP address for quick verification.
+  // Clicking opens the terminal UI network manager (nmtui).
+  "network": {
+    "format-wifi": "NET {ipaddr}",
+    "format-ethernet": "NET {ipaddr}",
+    "format-disconnected": "No Net",
+    "interval": 5,
+    "on-click": "nmtui"
+  },
+
+  // Battery
+  // Monitoring for laptop use.
+  // 'states': Color-coded warnings at 30% and critical alerts at 15%.
+  "battery": {
+    "format": "BAT {capacity}%",
+    "format-discharging": "BAT {capacity}%",
+    "format-charging": "BAT {capacity}%",
+    "format-plugged": "BAT {capacity}%",
+    "format-full": "BAT {capacity}%",
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "interval": 5
+  },
+
+  // Clock
+  // 12-hour format with AM/PM. Tooltip shows full date.
+  "clock": {
+    "format": "{:%I:%M %p}",
+    "tooltip-format": "{:%d-%m-%Y}"
+  }
+}
