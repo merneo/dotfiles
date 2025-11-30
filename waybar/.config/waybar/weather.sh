@@ -57,4 +57,4 @@ esac
 # 7. Output JSON
 # Text: Icon + Temp
 # Tooltip: City, Description, Humidity
-echo "{"text": "$icon ${temp}°C", "tooltip": "$city\n$desc\nHumidity: ${humidity}%"}"
+echo "{\"text\": \"$icon ${temp}°C\", \"tooltip\": \"$city\n$desc\nHumidity: ${humidity}%\"}"
