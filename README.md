@@ -1,6 +1,8 @@
 # Hyprland Dotfiles
 
 > A clean, production-ready Arch Linux desktop environment configured for optimal performance and aesthetics with the Catppuccin Mocha Green theme.
+>
+> **Tailored for:** HP EliteBook x360 1030 G2
 
 [![Hyprland](https://img.shields.io/badge/Hyprland-Wayland-blue?style=flat-square&logo=Hyprland&logoColor=white)](https://hyprland.org/)
 [![Arch Linux](https://img.shields.io/badge/Arch-Linux-1793D1?style=flat-square&logo=arch-linux&logoColor=white)](https://archlinux.org/)
