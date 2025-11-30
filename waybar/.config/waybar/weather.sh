@@ -15,10 +15,10 @@ fi
 
 # 2. Fetch weather data
 # -s: Silent mode
-# --max-time 5: Timeout after 5 seconds to prevent Waybar hanging
+# --max-time 15: Timeout after 15 seconds to prevent Waybar hanging
 # format=j1: Request JSON output
 # URL ends with /?format=j1 to auto-detect location based on IP
-weather_data=$(curl --max-time 5 -s "https://wttr.in/?format=j1")
+weather_data=$(curl --max-time 15 -s "https://wttr.in/?format=j1")
 
 # 3. Handle connection errors
 if [ $? -ne 0 ] || [ -z "$weather_data" ]; then
